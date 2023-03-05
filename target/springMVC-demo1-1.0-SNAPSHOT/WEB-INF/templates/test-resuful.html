@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table id ="dateTable" border="1" cellpadding="0" cellspacing="0" style="text-align: center">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>age</th>
+        <th>status</th>
+    </tr>
+    <tr th:each="user : ${userController}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.status}"></td>
+        <td>
+            <a @click="deleteUserClick" th:href="@{'/deleteUser/' + ${user.id}}">delete</a>
+        </td>
+        <td>
+            <a th:href="@{'/GetUserId/' + ${user.id}}">update</a>
+        </td>
+    </tr>
+</table>
+
+<form id="deleteForm" method="post">
+    <input type="hidden" name="_method"  value="delete">
+</form>
+
+<script type="text/javascript" th:src="@{/static/js/vue.js}"></script>
+
+<script type="text/javascript">
+    var vue = new Vue({
+        el:"#dateTable",
+        methods:{
+            deleteUserClick:function (event) {
+                var deleteForm = document.getElementById("deleteForm");
+                deleteForm.action =event.target.href;
+                deleteForm.submit();
+                // 取消<a>默认行为
+                event.preventDefault();
+            }
+        }
+    });
+</script>
+</body>
+</html>
